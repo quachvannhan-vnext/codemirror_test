@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.0/codemirror.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.0/codemirror.min.js"></script>
+  <style>
+    .CodeMirror {
+      position: absolute;
+      border: 1px solid black;
+      height: 200px;
+    }
+
+    textarea {
+      width: calc(100% - 29px - 8px - 3px - 7px);
+      height: calc(200px - 8px);
+      margin-left: 29px;
+      padding: 4px;
+      font-size: 13px;
+      position: absolute;
+      z-index: 1000;
+      color: red;
+      display: block;
+      resize: none;
+      border: 1px solid black;
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <h1>Sample code using Codemirror</h1>
+  <textarea id="editor" oninput="copyToEditor()" onscroll="scrollEditor()">
+    123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890
+  </textarea>
+
+  <script>
+    // Init editor
+    var editor = CodeMirror.fromTextArea(document.getElementById("editor"), {
+      lineNumbers: true,
+      lineWrapping: true,
+    });
+
+    // Show textarea
+    var textarea = document.getElementById("editor");
+    textarea.style.display = "block";
+
+    function copyToEditor() {
+      // Copy data from textarea to codemirror editor
+      editor.setValue(textarea.value);
+
+      // sync scroll of textarea and codemirror editor
+      scrollEditor();
+
+      var lineNumber = document.getElementsByClassName("CodeMirror-linenumbers")[0];
+      if (textarea.style.marginLeft !== lineNumber.offsetWidth + "px") {
+        console.log("update margin");
+        textarea.style.marginLeft = lineNumber.offsetWidth + "px";
+        textarea.style.width = `calc(100% - ${lineNumber.offsetWidth}px - 8px - 3px - 7px)`;
+      }
+    }
+
+    function scrollEditor() {
+      // console.log(textarea.scrollTop);
+      editor.scrollTo(0, textarea.scrollTop);
+    }
+
+    copyToEditor();
+  </script>
+
+</html>
